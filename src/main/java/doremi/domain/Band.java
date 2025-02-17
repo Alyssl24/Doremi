@@ -1,7 +1,12 @@
 package doremi.domain;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class Band {
 
+    @NotNull
+    @NotEmpty
     private String name;
     private boolean active;
 
