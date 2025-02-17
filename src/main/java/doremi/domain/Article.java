@@ -1,8 +1,13 @@
 package doremi.domain;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class Article {
 
+    @Min(0)
     private int articleId;
+    @NotBlank
     private String title;
     private String category;
 
