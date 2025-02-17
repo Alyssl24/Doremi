@@ -1,8 +1,8 @@
 # TP "AWD" M1 2025 : Do-Ré-Mi
 
-### NOM :
-### Prénom :
+### NOM : Leclerc
+### Prénom : Alyssia
 ### Groupe de TP :
-- [x] 41
+- [ ] 41
 - [ ] 51
-- [ ] 52
+- [x] 52
