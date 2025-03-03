@@ -2,6 +2,7 @@ package doremi.repositories;
 
 import doremi.domain.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -60,10 +61,46 @@ public class ArticleRepositoryWithJdbc implements ArticleRepositoryInt {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la récupération de l'article avec l'ID " + id, e);
+            throw new RuntimeException(e);
         }
 
         return null;
+    }
+
+    @Override
+    public Article saveArticle(Article article) {
+        if (article == null) {
+            throw new InvalidDataAccessApiUsageException("Impossible de sauvegarder un article null");
+        }
+
+        String checkSql = "SELECT COUNT(*) FROM articles WHERE id = ?";
+        String insertSql = "INSERT INTO articles (id, title, categorie) VALUES (?, ?, ?)";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+
+            checkStmt.setInt(1, article.getArticleId());
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    throw new InvalidDataAccessApiUsageException("L'article avec ID " + article.getArticleId() + " existe déjà");
+                }
+            }
+
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                insertStmt.setInt(1, article.getArticleId());
+                insertStmt.setString(2, article.getTitle());
+                insertStmt.setString(3, article.getCategory());
+
+                int affectedRows = insertStmt.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new RuntimeException("Échec de l'insertion de l'article");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'insertion de l'article en base", e);
+        }
+
+        return article;
     }
 
 }

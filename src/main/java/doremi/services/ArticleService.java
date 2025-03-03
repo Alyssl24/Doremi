@@ -27,4 +27,8 @@ public class ArticleService {
     public Article findArticleById(int id) {
         return this.articleRepository.findArticleById(id);
     }
+
+    public Article saveArticle(Article article) {
+        return this.articleRepository.saveArticle(article);
+    }
 }

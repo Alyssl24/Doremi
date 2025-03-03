@@ -1,7 +1,10 @@
 package doremi.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.Objects;
 
 public class Article {
 
@@ -43,4 +46,15 @@ public class Article {
         this.category = category;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Article article)) return false;
+        return articleId == article.articleId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(articleId);
+    }
 }
