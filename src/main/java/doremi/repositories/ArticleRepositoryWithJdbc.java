@@ -41,4 +41,29 @@ public class ArticleRepositoryWithJdbc implements ArticleRepositoryInt {
         }
         return articles;
     }
+
+    @Override
+    public Article findArticleById(int id) {
+        String sql = "SELECT * FROM articles WHERE id = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Article(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("categorie")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la récupération de l'article avec l'ID " + id, e);
+        }
+
+        return null;
+    }
+
 }

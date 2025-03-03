@@ -23,4 +23,8 @@ public class ArticleService {
     public ArticleRepositoryInt getArticleRepository() {
         return this.articleRepository;
     }
+
+    public Article findArticleById(int id) {
+        return this.articleRepository.findArticleById(id);
+    }
 }

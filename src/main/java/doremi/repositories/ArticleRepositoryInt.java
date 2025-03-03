@@ -8,5 +8,6 @@ import java.util.List;
 public interface ArticleRepositoryInt {
 
     public List<Article> findAllArticles();
+    public Article findArticleById(int id);
 
 }
