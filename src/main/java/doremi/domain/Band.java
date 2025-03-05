@@ -3,8 +3,12 @@ package doremi.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Band {
@@ -17,6 +21,9 @@ public class Band {
     @NotEmpty
     private String name;
     private boolean active;
+
+    @OneToMany
+    private List<Album> albums = new ArrayList<Album>();
 
     public Band(String name, boolean active) {
         this.setName(name);
@@ -44,4 +51,18 @@ public class Band {
     }
 
     public Long getId() {return this.id;}
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void addAlbum(Album album) {
+        this.albums.add(album);
+        album.setBand(this);
+    }
+
+    public void removeAlbum(Album album) {
+        this.albums.remove(album);
+        album.setBand(null);
+    }
 }
