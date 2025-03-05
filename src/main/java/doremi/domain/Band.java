@@ -1,9 +1,17 @@
 package doremi.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
 public class Band {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @NotNull
     @NotEmpty
@@ -13,6 +21,10 @@ public class Band {
     public Band(String name, boolean active) {
         this.setName(name);
         this.setActive(active);
+    }
+
+    public Band() {
+
     }
 
     public String getName() {
@@ -30,4 +42,6 @@ public class Band {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Long getId() {return this.id;}
 }
