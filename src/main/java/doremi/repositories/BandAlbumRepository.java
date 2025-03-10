@@ -37,8 +37,7 @@ public class BandAlbumRepository {
         if (band == null) {
             throw new IllegalArgumentException("Band cannot be null");
         }
-        this.entityManager.merge(band);
-        return band;
+        return this.entityManager.merge(band);
     }
 
     public Album save(Album album) {
@@ -52,11 +51,6 @@ public class BandAlbumRepository {
         if (!managedBand.getAlbums().contains(album)) {
             managedBand.addAlbum(album);
         }
-        if (album.getId() == null) {
-            entityManager.persist(album);
-            return album;
-        } else {
-            return entityManager.merge(album);
-        }
+        return entityManager.merge(album);
     }
 }

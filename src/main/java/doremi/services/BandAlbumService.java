@@ -4,8 +4,10 @@ import doremi.domain.Album;
 import doremi.domain.Band;
 import doremi.repositories.BandAlbumRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class BandAlbumService {
     private BandAlbumRepository bandAlbumRepository;
 
@@ -17,18 +19,18 @@ public class BandAlbumService {
         return this.bandAlbumRepository;
     }
 
-    public void save(Band band) throws IllegalArgumentException {
+    public Band save(Band band) throws IllegalArgumentException {
         if (band == null) {
             throw new IllegalArgumentException();
         }
-        this.bandAlbumRepository.save(band);
+        return this.bandAlbumRepository.save(band);
     }
 
-    public void save(Album album) throws IllegalArgumentException {
+    public Album save(Album album) throws IllegalArgumentException {
         if (album == null) {
             throw new IllegalArgumentException();
         }
-        this.bandAlbumRepository.save(album);
+        return this.bandAlbumRepository.save(album);
     }
 
     public Album findAlbumById(Long id) throws IllegalArgumentException {
