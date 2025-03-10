@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.ConstraintViolationException;
 import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,17 +33,30 @@ public class BandAlbumRepository {
         return this.entityManager;
     }
 
-    public void save(Band band) throws IllegalArgumentException {
+    public Band save(Band band) throws IllegalArgumentException {
         if (band == null) {
-            throw new IllegalArgumentException("Band not found");
+            throw new IllegalArgumentException("Band cannot be null");
         }
-        this.entityManager.persist(band);
+        this.entityManager.merge(band);
+        return band;
     }
 
-    public void save(Album album) throws IllegalArgumentException {
+    public Album save(Album album) {
         if (album == null) {
-            throw new IllegalArgumentException("Album id cannot be null");
+            throw new IllegalArgumentException("Album cannot be null");
         }
-        this.entityManager.persist(album);
+        if (album.getBand() == null) {
+            throw new IllegalArgumentException("Album must be associated with a band");
+        }
+        Band managedBand = entityManager.merge(album.getBand());
+        if (!managedBand.getAlbums().contains(album)) {
+            managedBand.addAlbum(album);
+        }
+        if (album.getId() == null) {
+            entityManager.persist(album);
+            return album;
+        } else {
+            return entityManager.merge(album);
+        }
     }
 }
