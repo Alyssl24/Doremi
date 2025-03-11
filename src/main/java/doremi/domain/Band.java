@@ -58,7 +58,6 @@ public class Band {
 
     public void addAlbum(Album album) {
         this.albums.add(album);
-        album.setBand(this);
     }
 
     public void removeAlbum(Album album) {

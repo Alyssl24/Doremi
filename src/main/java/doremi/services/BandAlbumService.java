@@ -6,6 +6,8 @@ import doremi.repositories.BandAlbumRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class BandAlbumService {
@@ -45,5 +47,9 @@ public class BandAlbumService {
             throw new IllegalArgumentException();
         }
         return this.bandAlbumRepository.findBandById(id);
+    }
+
+    public List<Band> findAllBand() {
+        return this.bandAlbumRepository.findAllBand();
     }
 }
