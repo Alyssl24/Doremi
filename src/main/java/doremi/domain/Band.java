@@ -49,6 +49,8 @@ public class Band {
 
     public Long getId() {return this.id;}
 
+    public void setId(Long id) {this.id = id;}
+
     public List<Album> getAlbums() {
         return albums;
     }

@@ -1,10 +1,12 @@
 package doremi.controllers;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import doremi.domain.Band;
 import doremi.services.BandAlbumService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,9 +39,22 @@ public class BandController {
     }
 
     @GetMapping("/band/new")
-    public String showForm(Band band) {
+    public String showForm(Band band, Model model) {
+        model.addAttribute("band", band);
         return "bandForm";
     }
+
+    @GetMapping("/band/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+        Band band = bandAlbumService.findBandById(id);
+        if (band == null) {
+            return "error";
+        }
+        model.addAttribute("band", band);
+        System.out.println("MESSAGE 2.0:" + band.getId());
+        return "bandForm";
+    }
+
 
     @PostMapping("/band")
     public String saveBand(@Valid Band band, BindingResult bindingResult) {
@@ -47,6 +62,7 @@ public class BandController {
             return "bandForm";
         }
         Band savedBand = bandAlbumService.save(band);
+        System.out.println("MESSAGE:" + band.getId() + " " + savedBand.getId());
         return "redirect:/band/" + savedBand.getId();
     }
 
