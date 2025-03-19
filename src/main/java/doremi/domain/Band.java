@@ -1,9 +1,6 @@
 package doremi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,7 +19,7 @@ public class Band {
     private String name;
     private boolean active;
 
-    @OneToMany
+    @OneToMany(mappedBy = "band", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Album> albums = new ArrayList<Album>();
 
     public Band(String name, boolean active) {
@@ -57,7 +54,10 @@ public class Band {
     }
 
     public void addAlbum(Album album) {
-        this.albums.add(album);
+        if (!albums.contains(album)) {
+            albums.add(album);
+        }
+        album.setBand(this);
     }
 
     public void removeAlbum(Album album) {

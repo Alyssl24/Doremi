@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head th:replace="fragments/headerinc :: head">
+    <title>Do-Ré-Mi</title>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<h2>Détail du groupe</h2>
+
+<div class="w3-cell-row">
+    <div class="w3-container w3-cell" style="width:20%">
+        <p>Id :</p>
+    </div>
+    <div class="w3-container w3-cell">
+        <p th:text="${band.id}"></p>
+    </div>
+</div>
+
+<div class="w3-cell-row">
+    <div class="w3-container w3-cell" style="width:20%">
+        <p>Nom :</p>
+    </div>
+    <div class="w3-container w3-cell">
+        <p th:text="${band.name}"></p>
+    </div>
+</div>
+
+<div class="w3-cell-row">
+    <div class="w3-container w3-cell" style="width:20%">
+        <p>Actif :</p>
+    </div>
+    <div class="w3-container w3-cell">
+        <p th:text="${band.active} ? 'Oui' : 'Non'"></p>
+    </div>
+</div>
+
+<div class="w3-cell-row">
+    <div class="w3-container w3-cell" style="width:20%">
+        <p>Liste des albums :</p>
+    </div>
+    <div class="w3-container w3-cell">
+        <ul>
+            <li th:each="album : ${band.albums}">
+                <span th:text="${album.title}"></span> - <span th:text="${album.year}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
